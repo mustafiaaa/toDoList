@@ -1,17 +1,12 @@
 import express from "express"
-import cors from "cors"
-import {createTodo, getAllDone, getAllNotDone} from "../controller/todoController"
+import {createTodo, getAllDone, getAllNotDone, updateTodo, deleteTodo} from "../controller/todoController"
 
 const Router = express.Router()
-
-var corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
-  
 
 Router.post('/insertTodo', createTodo)
 Router.get('/getDone', getAllDone)
 Router.get('/getNotDone', getAllNotDone)
+Router.post('/updateTodo', updateTodo)
+Router.post('/deleteTodo', deleteTodo)
 
 export default Router

@@ -35,3 +35,8 @@
 .todoContainer{
   margin: 5% !important; 
 }
+
+.inputSize{
+    width: 60vw !important;
+    margin-right: 2vw !important;
+}

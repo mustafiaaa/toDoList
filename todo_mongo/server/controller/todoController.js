@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 import todoObj from "../model/todoModel"
 
 //insert todo
-function createTodo(req, res){
+function createTodo(req, res, next){
     let date = new Date()
     let currentTime = date.getTime()
     const todoList = new todoObj({
@@ -32,7 +32,7 @@ function createTodo(req, res){
 }
 
 //get all notDone todo
-function getAllNotDone(req, res){
+function getAllNotDone(req, res, next){
     todoObj.find({status: false})
     .select('_id title createdDate lastDate')
     .then((allTodo) => {
@@ -53,7 +53,7 @@ function getAllNotDone(req, res){
 
 
 //get all done todo
-function getAllDone(req, res){
+function getAllDone(req, res, next){
     todoObj.find({status: true})
     .select('_id title createdDate lastDate')
     .then((allTodo) => {
@@ -72,4 +72,40 @@ function getAllDone(req, res){
     })
 }
 
-export {createTodo, getAllNotDone, getAllDone}
+//update todo
+function updateTodo(req, res){
+    todoObj.update({_id: req.body.todoid}, {$set: {status: true}})
+    .then(() => {
+        return res.status(200).json({
+            success: true,
+            message: "Todo Updated Successfully"
+        })
+    })
+    .catch((err) => {
+        res.status(500).json({
+            success: false,
+            message: "Error occur on sever while updating",
+            error: err
+        })
+    })    
+}
+
+//delete todo
+function deleteTodo(req, res){
+    todoObj.remove({_id: req.body.todoid})
+    .then(() => {
+        return res.status(200).json({
+            success: true,
+            message: "Todo Deleted successfully"
+        })
+    })
+    .catch((err) => {
+        res.status(500).json({
+            success: false,
+            message: "Error occur on server while deleting todo",
+            error: err
+        })
+    })
+}
+
+export {createTodo, getAllNotDone, getAllDone, updateTodo, deleteTodo}
