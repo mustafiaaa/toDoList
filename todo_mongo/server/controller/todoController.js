@@ -90,6 +90,24 @@ function updateTodo(req, res){
     })    
 }
 
+//update todo
+function updateAllTodo(req, res){
+    todoObj.update({status: false}, {$set: {status: true}}, {multi:true})
+    .then(() => {
+        return res.status(200).json({
+            success: true,
+            message: "All Todo Updated Successfully"
+        })
+    })
+    .catch((err) => {
+        res.status(500).json({
+            success: false,
+            message: "Error occur on sever while updating",
+            error: err
+        })
+    })    
+}
+
 //delete todo
 function deleteTodo(req, res){
     todoObj.remove({_id: req.body.todoid})
@@ -108,4 +126,4 @@ function deleteTodo(req, res){
     })
 }
 
-export {createTodo, getAllNotDone, getAllDone, updateTodo, deleteTodo}
+export {createTodo, getAllNotDone, getAllDone, updateTodo, deleteTodo, updateAllTodo}

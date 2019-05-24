@@ -13,9 +13,22 @@ export default class NavigationBar extends Component {
             isLoaded: false,
             items: [],
             activeItem: 'home',
-            tableBody: []
+            tableBody: [],
+            date: '',
+            inputText: ''
            }
-  
+
+  insertTodo = () => {
+
+      axios.post(`${appUrl}/insertTodo`, {title: this.state.inputText, lastDate: this.state.date})
+                    .then(res => {
+                      console.log(res)
+                      if(res.data.success === true){
+                        alert("Todo Inserted successfully !!!")
+                        window.location.reload()
+                      }
+      })
+  }
 
   handleItemClick = (e, { name }) => {
                       this.setState({ activeItem: name, tableBody: [], items: []})
@@ -54,7 +67,24 @@ export default class NavigationBar extends Component {
                       }
                     })
                 }
-    
+  handleMarkAll = () => {
+              axios.post(`${appUrl}/updateAllTodo`)
+              .then(res => {
+                console.log(res)
+                if(res.data.success === true){
+                  alert("All Todo Updated successfully !!!")
+                  window.location.reload()
+                }
+              })
+  }
+
+  handleDateChange = (date) => {
+      this.setState({date})
+  }
+
+  handleTextChange = (value) => {
+    this.setState({inputText: value.target.value})
+  }
   // insertTodo = (e, {}) 
   componentDidMount(){
     console.log("inside component did mount")
@@ -66,20 +96,41 @@ export default class NavigationBar extends Component {
     }
   }
 
+  diff_minutes(dt2, dt1) 
+  {
+    dt2 = new Date(dt2)
+    dt1 = new Date(dt1)
+    var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= 60;
+    diff /= 60;
+    diff = Math.abs(Math.round(diff))
+    if(diff > 24)
+    {
+        diff /= 24
+        diff = Math.abs(Math.round(diff))
+        diff += ' Days'
+    }
+    else{
+        diff += " Hours"
+    }  
+    return (diff);
+
+ }
+
   render() {
     const { activeItem } = this.state
-    
     // console.log(this.state)
+    let tableBody = []
     if(this.state.items.length > 0){
       let noOfElements = 0
       for(let data of this.state.items){
         noOfElements++
-        this.state.tableBody.push(
+        tableBody.push(
           <Table.Row key={noOfElements}>
             <Table.Cell>{noOfElements}.</Table.Cell>
             <Table.Cell>{data.title}</Table.Cell>
             <Table.Cell>{data.createdDate}</Table.Cell>
-            <Table.Cell>{data.lastDate}</Table.Cell>
+            <Table.Cell>{this.diff_minutes(data.lastDate, data.createdDate)}</Table.Cell>
             <Table.Cell>
               <Button.Group icon>
                 <Button todoid={data._id} onClick={this.handleDelete}>
@@ -97,18 +148,24 @@ export default class NavigationBar extends Component {
     let inputElement = []
     if(this.state.activeItem === 'home'){
       inputElement.push(
-        <Segment raised>
+        <Segment raised key="todoInput">
         <Label as='a' color='blue' ribbon>
             ToDo List
         </Label>
-        <Input className="inputSize" placeholder='Insert new todo task...' />
+        <Input className="inputSize" onChange={this.handleTextChange} placeholder='Insert new todo task...' />
+        <DatePicker  className="dateInput
+        " selected={this.state.date} onChange={this.handleDateChange} 
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy h:mm aa"
+              timeCaption="time"
+        />
               <Button.Group>
               <Button>Cancel</Button>
               <Button.Or />
               <Button positive onClick={this.insertTodo}>Save</Button>
               </Button.Group>
-              <DatePicker selected={this.state.date} onChange={this.handleChange} />
-        
         </Segment>
       )
     }
@@ -136,9 +193,18 @@ export default class NavigationBar extends Component {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {this.state.tableBody}
+                {tableBody}
               </Table.Body>
+              <Table.Footer>
+
+              </Table.Footer>
             </Table>  
+            <Button className="checkAll" onClick={this.handleMarkAll} style={this.state.activeItem === 'Completed' ? {display: 'none', marginLeft : "10vw"} : {display: 'block'}}>
+                  <Label as='a' color='teal' ribbon>
+                  Mark All
+                  </Label>
+                  <Icon name='checkmark' />
+            </Button>
         </Segment>
       </div>
     )
