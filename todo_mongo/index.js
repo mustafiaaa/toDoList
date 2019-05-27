@@ -1,17 +1,20 @@
 //import dependencies 
-import express from "express"
-import bodyPerser from "body-parser"
-import mongoose from "mongoose"
-import logger from "morgan"
-const cors = require("cors")
+import express from "express";
+import bodyPerser from "body-parser";
+import mongoose from "mongoose";
+import logger from "morgan";
+const cors = require("cors");
+const passport = require("passport");
+const users = require("./server/route/api/user");
+
 
 //importing routs 
-import routes from "./server/route/todoRoute"
+import routes from "./server/route/todoRoute";
 
 //set up dependencies
 const app = express()
 app.use(bodyPerser.json())
-app.use(bodyPerser.urlencoded({extended: false}))
+app.use(bodyPerser.urlencoded({extended: true}))
 app.use(logger("div"))
 
 
@@ -35,6 +38,12 @@ app.get('/', (req, res, next) => {
         message : 'Welcome to MONGO TODO Project'
     })
 })
+// Passport middleware
+app.use(passport.initialize());
+// Passport config
+require("./server/config/password")(passport);
+// Routes
+app.use("/api/users", users);
 
 app.use('/todo/', routes)
 
