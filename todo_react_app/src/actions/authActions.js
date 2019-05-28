@@ -4,50 +4,63 @@ import jwt_decode from "jwt-decode";
 import {
   GET_ERRORS,
   SET_CURRENT_USER,
-  USER_LOADING
+  USER_LOADING,
+  VALIDATING_USER
 } from "./types";
 
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("http://localhost:3050/api/users/register", userData)
     .then(res => history.push("/login"))
-    .catch(err =>
+    .catch(err =>{ alert('cannot register');
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
+      })}
     );
 };
 
-export const loginUser = (userData, history) => dispatch => {
-  axios
-    .post("http://localhost:3050/api/users/login", userData)
-    .then(res => {
+export const loginUser = (userData, dispatch) => {
+  axios.post("http://localhost:3050/api/users/login", userData).then( (res) => {
+      if(res.data.success){
+        dispatch(loginSuccessed(res.data));
+      }
+      else{
+        dispatch(loginFailed(res.data));
+      }
+  });
 // Save to localStorage
 // Set token to localStorage
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      // Set current user
-      dispatch(setCurrentUser(decoded));
-      // history.push("/navigation")
-    })
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
+  console.log("...........................inside login user action")
+  // const { token } = res.data;
+  // localStorage.setItem("jwtToken", token);
+  // // Set token to Auth header
+  // setAuthToken(token);
+  // // Decode token to get user data
+  // const decoded = jwt_decode(token);
+  // Set current user
+  return({
+    type: VALIDATING_USER,
+  });
 };
 
-export const setCurrentUser = decoded => {
-  return {
+export const loginSuccessed = (data) => ({
+  type: SET_CURRENT_USER,
+  data
+})
+
+export const loginFailed = (err) = ({
+  type: USER_LOADING,
+  err
+})
+
+export const setCurrentUser = (decoded, res)=> {
+  return async (dispatch) => {
+    dispatch({
     type: SET_CURRENT_USER,
-    payload: decoded
-  };
+    payload: {decoded, res}
+    })
+  }
 };
 
 export const setUserLoading = () => {

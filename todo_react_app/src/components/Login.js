@@ -14,40 +14,45 @@ class Login extends React.Component{
             errors: {}
         };
     }
-    componentDidMount() {
-        // If logged in and user navigates to Login page, should redirect them to dashboard
-        if (this.props.isAuthenticated) {
-          this.props.history.push("/navigation");
-        }		    
-    }
+    // componentDidMount() {
+    //     // If logged in and user navigates to Login page, should redirect them to dashboard
+    //     if (this.props.isAuthenticated) {
+    //       this.props.history.push("/navigation");
+    //     }		    
+    // }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.auth.isAuthenticated) {
-          this.props.history.push("/navigation"); // push user to home when they login
-        }
-    if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
-        }
-      }
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.auth.isAuthenticated) {
+    //       this.props.history.push("/navigation"); // push user to home when they login
+    //     }
+    // if (nextProps.errors) {
+    //       this.setState({
+    //         errors: nextProps.errors
+    //       });
+    //     }
+    //   }
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
       };
 
-    onSubmit = e => {
+    onSubmit = (e) => {
         e.preventDefault();
         const userData = {
             email: this.state.email,
             password: this.state.password
-        };
-        console.log(userData);
-        this.props.loginUser(userData);
+        }
+        console.log(userData)
+        this.props.login(userData)
+        console.log("console after login..........",this.props)
+        if(this.props.isAuthenticated === true)
+            this.props.history.push("/navigation")
+        // if(this.props.serverResponse.data.success === true)
+        //     alert("Login Successfull !!!!")
     }
 
     render() {
-        const {errors} = this.state;
+        const {errors} = this.state; 
         return(
             <div>
                 <h4>Login Below</h4>
@@ -90,7 +95,14 @@ Login.propTypes = {
   
 const mapStateToProps = state => ({
     auth: state.auth,
-    errors: state.errors
+    errors: state.errors,
+    loading:state.loading,
+    isAuthenticated: state.isAuthenticated,
+    serverResponse: state.serverResponse
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    login: (userData) => dispatch(loginUser(userData, dispatch)),
 });
   
-export default connect(mapStateToProps,{ loginUser })(Login);
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

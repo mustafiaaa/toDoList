@@ -41,7 +41,7 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Switch>
               <PrivateRoute exact path="/navigation" component={NavigationBar} />
-            </Switch>
+          </Switch>
       </div>
       </Router>
     </Provider>

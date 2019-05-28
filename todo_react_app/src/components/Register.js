@@ -17,13 +17,13 @@ class Register extends React.Component{
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
-        }
-      }
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.errors) {
+    //       this.setState({
+    //         errors: nextProps.errors
+    //       });
+    //     }
+    //   }
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
