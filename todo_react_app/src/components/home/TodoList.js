@@ -10,9 +10,9 @@ class TodoList extends Component {
 
     }
 
-    state = {
-       audioUrl: ''
-    }
+    // state = {
+    //    audioUrl: ''
+    // }
 
     diff_minutes(dt2, dt1) 
     {
@@ -50,17 +50,17 @@ class TodoList extends Component {
     }
 
     handleMarkAll = async (e) => {
-        // await this.props.dispatch(updateAllTodo())
-        // if(this.props.serverResponse === true){
-        //     this.props.dispatch(getActiveTodo())
-        // }
-        this.setState({audioUrl: 'https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3'})
-        var audio = document.getElementById('audio');
+        await this.props.dispatch(updateAllTodo())
+        if(this.props.serverResponse === true){
+            this.props.dispatch(getActiveTodo())
+        }
+        // this.setState({audioUrl: 'https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3'})
+        // var audio = document.getElementById('audio');
 
         // var source = document.getElementById('audioSource');
         // source.src = this.state.audioUrl
 
-        audio.load(); //call this to just preload the audio without playing
+        // audio.load(); //call this to just preload the audio without playing
         // audio.play(); //call this to play the song right away
     }
 
@@ -94,10 +94,10 @@ class TodoList extends Component {
 
         return ( 
           <div>
-            <audio id="audio" controls="controls">
+            {/* <audio id="audio" controls="controls">
             <source id="audioSource" src={this.state.audioUrl}></source>
             Your browser does not support the audio element.
-            </audio>
+            </audio> */}
               <InputTodo />
               <Table color="grey" key="grey">
               <Table.Header>

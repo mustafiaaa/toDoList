@@ -20,13 +20,13 @@ export default (state=initialState, action) => {
             return {
                 ...state,
                 error: action.error || '',
-                serverResponse: action.payload.serverResponse
+                serverResponse: action.payload.serverResponse || false
         }        
         case SHOW_ACTIV:
             return {
                 ...state,
                 error: '',
-                todoItems: action.payload.todoItems
+                todoItems: action.payload.todoItems || []
             }
         case SHOW_COMPLETED:
             return {
@@ -50,14 +50,14 @@ export default (state=initialState, action) => {
             return {
                  ...state,
                 error: action.error || '',
-                serverResponse: action.payload
+                serverResponse: action.payload || false
             }
         
         case ADD_TODO:
             return {
                 ...state,
                 error: action.error || '',
-                serverResponse: action.payload
+                serverResponse: action.payload || false
             }                
         default : 
             return state;

@@ -18,21 +18,29 @@ class TodoApp extends Component {
     // console.log(this.state)
     return (
       <Router>
-      <div>
-        <Menu pointing secondary>
-        <Link to={'/'}><Menu.Item name='Home' active={this.state.activePage === 'Home'}  onClick={this.handleItemClick} /></Link>
-          <Link to={'/completed'}><Menu.Item 
+         <div>
+          <Menu pointing secondary>
+          <Menu.Item  
+          as={Link} 
+          to='/' 
+          name='Home'
+          active={this.state.activePage === 'Home'}  
+          onClick={this.handleItemClick} 
+        />
+
+        <Menu.Item 
+            as = {Link}
+            to ='/completed'
             name='Completed'
             active={this.state.activePage === 'Completed'}
             onClick={this.handleItemClick}
-          /></Link>
+        />
         </Menu>
         <Segment>
            <Switch>
-           <Route exact path='/' component={TodoList} />  
-              <Route path="/completed"
-              component={ComTodoList} />
-            </Switch>
+            <Route exact path='/' component={TodoList} />  
+            <Route path="/completed" component={ComTodoList} />
+          </Switch>
         </Segment>
         </div>
       </Router>
