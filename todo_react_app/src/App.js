@@ -1,11 +1,12 @@
 import React from 'react';
-// import NavigationBar from './components/NavigationBar' ;
+import NavigationBar from './components/NavigationBar' ;
 import Register from './components/Register';
 import Login from './components/Login';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
+import PrivateRoute from './components/privateRoute';
 import './App.css';
 
 import { Provider } from "react-redux";
@@ -38,6 +39,9 @@ function App() {
           {/* <NavigationBar /> */}
           <Route exact path="/" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Switch>
+              <PrivateRoute exact path="/navigation" component={NavigationBar} />
+            </Switch>
       </div>
       </Router>
     </Provider>

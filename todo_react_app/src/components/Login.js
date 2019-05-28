@@ -14,10 +14,16 @@ class Login extends React.Component{
             errors: {}
         };
     }
+    componentDidMount() {
+        // If logged in and user navigates to Login page, should redirect them to dashboard
+        if (this.props.isAuthenticated) {
+          this.props.history.push("/navigation");
+        }		    
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
-          this.props.history.push("/home"); // push user to home when they login
+          this.props.history.push("/navigation"); // push user to home when they login
         }
     if (nextProps.errors) {
           this.setState({
@@ -31,10 +37,12 @@ class Login extends React.Component{
       };
 
     onSubmit = e => {
+        e.preventDefault();
         const userData = {
             email: this.state.email,
             password: this.state.password
         };
+        console.log(userData);
         this.props.loginUser(userData);
     }
 

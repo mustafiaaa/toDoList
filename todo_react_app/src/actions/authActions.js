@@ -9,7 +9,7 @@ import {
 
 export const registerUser = (userData, history) => dispatch => {
   axios
-    .post("/api/users/register", userData)
+    .post("http://localhost:3050/api/users/register", userData)
     .then(res => history.push("/login"))
     .catch(err =>
       dispatch({
@@ -19,9 +19,9 @@ export const registerUser = (userData, history) => dispatch => {
     );
 };
 
-export const loginUser = userData => dispatch => {
+export const loginUser = (userData, history) => dispatch => {
   axios
-    .post("/api/users/login", userData)
+    .post("http://localhost:3050/api/users/login", userData)
     .then(res => {
 // Save to localStorage
 // Set token to localStorage
@@ -33,6 +33,7 @@ export const loginUser = userData => dispatch => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
+      // history.push("/navigation")
     })
     .catch(err =>
       dispatch({

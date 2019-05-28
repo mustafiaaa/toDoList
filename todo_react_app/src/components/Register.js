@@ -30,20 +30,15 @@ class Register extends React.Component{
       };
 
     onSubmit = e => {
-        if(this.state.password === this.state.confirmPassword){
-            console.log('in if')
+        e.preventDefault();
             const newUser = {
                 name: this.state.name,
                 email: this.state.email,
                 password: this.state.password,
                 confirmPassword: this.state.confirmPassword
             };
+            console.log(newUser)
             this.props.registerUser(newUser, this.props.history);
-        }
-        else{
-            console.log('in else')
-            alert('Passwords must be same');
-        }
     }
 
     render() {
