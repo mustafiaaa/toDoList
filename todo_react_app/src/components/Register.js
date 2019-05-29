@@ -29,7 +29,7 @@ class Register extends React.Component{
         this.setState({ [e.target.id]: e.target.value });
       };
 
-    onSubmit = async e => {
+    onSubmit = e => {
         e.preventDefault();
             const newUser = {
                 name: this.state.name,
@@ -38,9 +38,7 @@ class Register extends React.Component{
                 confirmPassword: this.state.confirmPassword
             };
             console.log(newUser)
-            await this.props.registerUser(newUser, this.props.history);
-            if(this.props.err_value !== '')
-                alert("Please fill the form properly !!!!!")
+            this.props.registerUser(newUser, this.props.history);
     }
 
     render() {
@@ -60,7 +58,7 @@ class Register extends React.Component{
                             error = {errors.name}
                             id = 'name'
                             type = 'text'
-                            />
+                            required/>
                     </Form.Field>
                     <Form.Field>
                         <Label>Email</Label>
@@ -71,7 +69,7 @@ class Register extends React.Component{
                             errors = {errors.email}
                             id = 'email'
                             type = 'email'
-                             />
+                            required />
                     </Form.Field>
                     <Form.Field>
                         <Label>Password</Label>
@@ -82,7 +80,7 @@ class Register extends React.Component{
                             errors = {errors.password}
                             id = 'password'
                             type = 'password'
-                            />
+                            required/>
                     </Form.Field>
                     <Form.Field>
                         <Label>Confirm Password</Label>
@@ -93,7 +91,7 @@ class Register extends React.Component{
                             errors = {errors.confirmPassword}
                             id = 'confirmPassword'
                             type = 'password'
-                            />
+                            required/>
                     </Form.Field>
                     <Button type = 'submit'>Sign Up</Button>
                 </Form>
@@ -110,6 +108,6 @@ Register.propTypes = {
   
 const mapStateToProps = state => ({
     auth: state.auth,
-    errors: state.err_value
+    errors: state.errors
 });
 export default connect(mapStateToProps,{ registerUser })(withRouter(Register));
