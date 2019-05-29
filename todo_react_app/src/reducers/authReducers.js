@@ -1,3 +1,4 @@
+import isEmpty from 'is-empty';
 import {
     SET_CURRENT_USER,
     USER_LOADING,
@@ -14,15 +15,17 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-    console.log("inside auth reducer.....................")
+    // console.log("inside auth reducer.....................")
     switch (action.type) {
       case SET_CURRENT_USER:
-        console.log("in auth reducer set_current_user...........", action.payload)
-        return {
-          ...state,
-          user: action.payload.decoded,
-          isAuthenticated: action.payload.res !== undefined ? action.payload.res.data.success : false 
-        };
+        console.log("in auth reducer set_current_user...........", action, action.data)
+        if(!isEmpty(action.data))
+          return {
+            ...state,
+            user: action.data,
+            isAuthenticated: true 
+          };
+        return state; 
       case USER_LOADING:
         return {
           ...state,

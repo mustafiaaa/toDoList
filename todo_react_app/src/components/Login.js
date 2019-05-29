@@ -6,14 +6,12 @@ import { connect } from "react-redux";
 import { loginUser } from "../actions/authActions";
 
 class Login extends React.Component{
-    constructor(){
-        super();
-        this.state = {
-            email: '',
-            password: '',
-            errors: {}
-        };
-    }
+    
+    state = {
+        email: '',
+        password: '',
+        errors: {}
+    };
     // componentDidMount() {
     //     // If logged in and user navigates to Login page, should redirect them to dashboard
     //     if (this.props.isAuthenticated) {
@@ -32,7 +30,7 @@ class Login extends React.Component{
     //     }
     //   }
 
-    onChange = e => {
+    onChange = (e) => {
         this.setState({ [e.target.id]: e.target.value });
       };
 
@@ -42,17 +40,18 @@ class Login extends React.Component{
             email: this.state.email,
             password: this.state.password
         }
-        console.log(userData)
+        // console.log(userData)
         this.props.login(userData)
-        console.log("console after login..........",this.props)
-        if(this.props.isAuthenticated === true)
-            this.props.history.push("/navigation")
+        
         // if(this.props.serverResponse.data.success === true)
         //     alert("Login Successfull !!!!")
     }
 
     render() {
         const {errors} = this.state; 
+        console.log("In login render..........",this.props)
+        if(this.props.isAuthenticated === true)
+            this.props.history.push("/navigation")
         return(
             <div>
                 <h4>Login Below</h4>
@@ -94,11 +93,10 @@ Login.propTypes = {
 };
   
 const mapStateToProps = state => ({
-    auth: state.auth,
-    errors: state.errors,
-    loading:state.loading,
-    isAuthenticated: state.isAuthenticated,
-    serverResponse: state.serverResponse
+    errors: state.errorReducers.errors,
+    loading: state.auth.loading,
+    isAuthenticated: state.auth.isAuthenticated,
+    serverResponse: state.auth.serverResponse
 });
 
 const mapDispatchToProps = (dispatch) => ({

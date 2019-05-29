@@ -22,16 +22,22 @@ export const registerUser = (userData, history) => dispatch => {
 
 export const loginUser = (userData, dispatch) => {
   axios.post("http://localhost:3050/api/users/login", userData).then( (res) => {
+    const { token } = res.data;
+    setAuthToken(token);
+    const decoded = jwt_decode(token);
+    console.log('res.....', res, decoded)
       if(res.data.success){
-        dispatch(loginSuccessed(res.data));
+        console.log('sucesss...........')
+        dispatch(loginSuccessed(decoded));
       }
-      else{
-        dispatch(loginFailed(res.data));
-      }
+      // else{
+      //   console.log('fail........')
+      //   dispatch(loginFailed(res.data));
+      // }
   });
 // Save to localStorage
 // Set token to localStorage
-  console.log("...........................inside login user action")
+  // console.log("...........................inside login user action")
   // const { token } = res.data;
   // localStorage.setItem("jwtToken", token);
   // // Set token to Auth header
@@ -49,10 +55,10 @@ export const loginSuccessed = (data) => ({
   data
 })
 
-export const loginFailed = (err) = ({
-  type: USER_LOADING,
-  err
-})
+// export const loginFailed = (err) => ({
+//   type: USER_LOADING,
+//   err
+// })
 
 export const setCurrentUser = (decoded, res)=> {
   return async (dispatch) => {
