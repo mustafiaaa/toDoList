@@ -1,8 +1,7 @@
 import isEmpty from 'is-empty';
 import {
     SET_CURRENT_USER,
-    USER_LOADING,
-    VALIDATING_USER
+    USER_LOADING
 } from '../actions/types';
 
 // const isEmpty = require("is-empty");
@@ -18,14 +17,17 @@ export default function(state = initialState, action) {
     // console.log("inside auth reducer.....................")
     switch (action.type) {
       case SET_CURRENT_USER:
-        console.log("in auth reducer set_current_user...........", action, action.data)
-        if(!isEmpty(action.data))
+        console.log("in auth reducer set_current_user...........", state,action.data,!isEmpty(action.data))
+        if(!isEmpty(action.data)){
           return {
             ...state,
             user: action.data,
             isAuthenticated: true 
           };
-        return state; 
+        }else{
+          window.location.href = "./login"
+          return state;
+        } 
       case USER_LOADING:
         return {
           ...state,

@@ -4,10 +4,12 @@ import axios from "axios"
 import 'semantic-ui-css/semantic.min.css'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import { connect } from "react-redux";
+import {logoutUser} from '../actions/authActions';
 // import Calendar from "react-input-calendar"
 const appUrl = "http://localhost:3050/todo"
 
-export default class NavigationBar extends Component {
+class NavigationBar extends Component {
   state = { 
             error: null,
             isLoaded: false,
@@ -117,7 +119,11 @@ export default class NavigationBar extends Component {
 
  }
 
+ onLogoutClick = () => this.props.logoutUser();
+
   render() {
+    const user =  this.props.auth;
+    console.log('loggedIn User..........', user.name)
     const { activeItem } = this.state
     // console.log(this.state)
     let tableBody = []
@@ -178,6 +184,13 @@ export default class NavigationBar extends Component {
             active={activeItem === 'Completed'}
             onClick={this.handleItemClick}
           />
+          <Menu.Menu position='right'>
+            <Menu.Item
+              name='logout'
+              active={activeItem === 'logout'}
+              onClick={this.onLogoutClick}
+            />
+          </Menu.Menu>
         </Menu>
 
         <Segment>
@@ -210,3 +223,11 @@ export default class NavigationBar extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth.user
+});
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(NavigationBar);

@@ -42,7 +42,8 @@ class Register extends React.Component{
     }
 
     render() {
-        
+        if(this.props.isAuthenticated === true)
+            this.props.history.push("/navigation")
         const {errors} = this.state;
         return(
             <div>
@@ -107,7 +108,7 @@ Register.propTypes = {
   };
   
 const mapStateToProps = state => ({
-    auth: state.auth,
+    isAuthenticated: state.auth.isAuthenticated,
     errors: state.errors
 });
 export default connect(mapStateToProps,{ registerUser })(withRouter(Register));

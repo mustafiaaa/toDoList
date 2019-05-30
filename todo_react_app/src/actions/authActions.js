@@ -23,6 +23,7 @@ export const registerUser = (userData, history) => dispatch => {
 export const loginUser = (userData, dispatch) => {
   axios.post("http://localhost:3050/api/users/login", userData).then( (res) => {
     const { token } = res.data;
+    localStorage.setItem("jwtToken", token);
     setAuthToken(token);
     const decoded = jwt_decode(token);
     console.log('res.....', res, decoded)
@@ -60,11 +61,11 @@ export const loginSuccessed = (data) => ({
 //   err
 // })
 
-export const setCurrentUser = (decoded, res)=> {
-  return async (dispatch) => {
+export const setCurrentUser = (data)=> {
+  return (dispatch) => {
     dispatch({
     type: SET_CURRENT_USER,
-    payload: {decoded, res}
+    data
     })
   }
 };
