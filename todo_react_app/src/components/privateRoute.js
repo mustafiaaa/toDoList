@@ -9,7 +9,6 @@ const PrivateRoute = ({ component: Component, auth }) => {
   console.log("in privte route ............ ", state)
   return (
    <Route
-    // {...rest}
     render={props =>
       (state.auth.isAuthenticated === true) ? (
         <Component {...props} />

@@ -12,23 +12,6 @@ class Login extends React.Component{
         password: '',
         errors: {}
     };
-    // componentDidMount() {
-    //     // If logged in and user navigates to Login page, should redirect them to dashboard
-    //     if (this.props.isAuthenticated) {
-    //       this.props.history.push("/navigation");
-    //     }		    
-    // }
-
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.auth.isAuthenticated) {
-    //       this.props.history.push("/navigation"); // push user to home when they login
-    //     }
-    // if (nextProps.errors) {
-    //       this.setState({
-    //         errors: nextProps.errors
-    //       });
-    //     }
-    //   }
 
     onChange = (e) => {
         this.setState({ [e.target.id]: e.target.value });
@@ -40,11 +23,7 @@ class Login extends React.Component{
             email: this.state.email,
             password: this.state.password
         }
-        // console.log(userData)
         this.props.login(userData)
-        
-        // if(this.props.serverResponse.data.success === true)
-        //     alert("Login Successfull !!!!")
     }
 
     render() {

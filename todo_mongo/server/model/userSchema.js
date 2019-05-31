@@ -16,9 +16,9 @@ _id: mongoose.Schema.Types.ObjectId,
     type: String,
     required: true
   },
-  date: {
-    type: Date,
-    default: Date.now
+  confirmPassword: {
+    type: String,
+    required: true
   }
 });
 module.exports = mongoose.model("users", UserSchema);

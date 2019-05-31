@@ -20,7 +20,8 @@ router.post("/register", (req, res) => {
     _id: mongoose.Types.ObjectId(),
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword
   });
 
   // Form validation
@@ -41,10 +42,8 @@ router.post("/register", (req, res) => {
       return res.status(500).json({ pass: "Password must be of 6 character" });
 
     }
-    else if (req.body.password != req.body.password2) {
+    else if (req.body.password !== req.body.confirmPassword) {
       return res.status(400).json({ pass: "Password must match" });
-
-
     }
 
     // Hash password before saving in database
