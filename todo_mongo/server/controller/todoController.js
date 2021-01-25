@@ -16,12 +16,12 @@ function createTodo(req, res, next){
     return todoList
            .save()
            .then((newTodo) => {
-               return res.status(201).json({
-                   success: true,
-                   message: "New todo is inserted",
-                   toDo : newTodo
-               })
-           })
+                return res.status(200).json({
+                    success: true,
+                    message: "All not done ToDo is found",
+                    toDo: newTodo
+                })            
+            })
            .catch((err) => {
                res.status(500).json({
                    success: false,
